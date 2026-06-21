@@ -10,7 +10,7 @@
 - 5 unique mini-games (Spectrum, Galveston, Sumo, ShadowChef, LongestSecond).
 - Cinematic historical intros preceding each game mode.
 - Hidden tasks & Starlight Fragments designed to reward exploratory interactions.
-- Easter egg "The Shadow of Turing" (Enigma skin and TTS monologue).
+- Easter egg "The Shadow of Alan Turing" (Enigma skin and TTS monologue).
 - Leaderboard (updated via GitHub Actions + Firestore).
 - 4-layer security architecture (Brainfuck parser, Enigma simulator, server validation, client countermeasures).
 
@@ -28,7 +28,7 @@ We implemented a robust 4-layer security mechanism designed out of respect for A
 ## 🏆 Best Ode to Alan Turing
 - **Enigma cipher**: Recreated accurate wiring sets for an Enigma M3 model, serving as a core puzzle component in the "Spectrum" mode.
 - **Brainfuck interpreter**: A nod to computational architecture and esolangs, directly verifying Turing completeness.
-- **Easter egg "The Shadow of Turing"**: Clicking the hub menhir 7 times securely unlocks an immersive "Enigma" UI skin and triggers a poignant spoken monologue.
+- **Easter egg "The Shadow of Alan Turing"**: Clicking the hub menhir 7 times securely unlocks an immersive "Enigma" UI skin and triggers a poignant spoken monologue.
 
 ## 🛠️ Tech Stack
 - React 18 + TypeScript

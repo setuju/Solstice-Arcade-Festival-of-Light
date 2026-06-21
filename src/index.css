@@ -1,6 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Orbitron:wght@400;700;900&family=Poppins:wght@400;600;700&display=swap');
 @import "tailwindcss";
 
+:root {
+  --header-height: 56px;
+}
+@media (min-width: 640px) {
+  :root {
+    --header-height: 64px;
+  }
+}
+
 html, body, #root {
   margin: 0;
   height: 100%;

@@ -14,7 +14,7 @@ export function GameHeader({ onReset, onBackToLanding }: Props) {
   if (gameState === 'landing') return null;
 
   return (
-    <div className="w-full h-16 shrink-0 bg-black/50 backdrop-blur-[12px] border-b border-white/10 flex items-center justify-between px-4 sm:px-6 z-[100] header-container">
+    <div className="fixed top-0 left-0 w-full h-[var(--header-height)] bg-black/50 backdrop-blur-[12px] border-b border-white/10 flex items-center justify-between px-4 sm:px-6 z-[100] header-container">
        <div className='flex items-center gap-2 sm:gap-4'>
         <button onClick={() => setGameState('hub')} className="text-xs sm:text-sm uppercase tracking-widest text-white/70 hover:text-white cursor-pointer hover:bg-white/10 px-2 sm:px-3 py-1 rounded transition-colors">{t('hub.title')}</button>
         <span className='text-white/40'>|</span>

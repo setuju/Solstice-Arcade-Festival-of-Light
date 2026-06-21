@@ -457,11 +457,11 @@ export function Spectrum() {
                                \`             '`}
         </div>
         <h2 className="text-4xl md:text-6xl font-black mb-6 text-center uppercase text-white drop-shadow-[0_0_15px_rgba(255,255,255,1)] animate-pulse">Alan Turing</h2>
-            <p className="text-xl md:text-2xl space-y-4 text-center max-w-3xl opacity-0 animate-[fadeIn_2s_ease_1s_forwards] font-light">
+            <div className="text-xl md:text-2xl space-y-4 text-center max-w-3xl opacity-0 animate-[fadeIn_2s_ease_1s_forwards] font-light">
                 <p className="tracking-wide">{t('spectrum.turing.fact1')}</p>
                 <p className="text-cyan-300">{t('spectrum.turing.fact2')}</p>
                 <p className="text-red-400"><span dangerouslySetInnerHTML={{ __html: t('spectrum.turing.fact3') }} /></p>
-            </p>
+            </div>
             <div className="mt-12 opacity-0 animate-[fadeIn_2s_ease_5s_forwards] flex flex-col items-center pb-12">
                 <p className="text-2xl md:text-4xl text-green-400 font-bold mb-4 drop-shadow-[0_0_15px_rgba(74,222,128,0.8)]">{t('spectrum.turing.reward')}</p>
                 <div className="flex flex-col md:flex-row gap-4 mt-6">

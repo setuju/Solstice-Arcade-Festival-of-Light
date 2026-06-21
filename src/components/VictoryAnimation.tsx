@@ -85,7 +85,7 @@ export function VictoryAnimation({ onFinish, onPlayAgain }: VictoryAnimationProp
         const walkCycle = Math.abs(Math.sin(time * 5)) * 10;
         const groupX = (time - 6) * 30 - 100; // Moving from left to right
 
-        const figures = ["🧍‍♂️ Turing", "🧍🏿‍♀️ Tubman", "🤼 Sumo", "👨‍🍳 Chef", "👧 Child"];
+        const figures = ["🧍‍♂️ Alan Turing", "🧍🏿‍♀️ Tubman", "🤼 Sumo", "👨‍🍳 Chef", "👧 Child"];
         ctx.font = '16px monospace';
         ctx.fillStyle = 'rgba(236, 216, 162, 0.6)'; // Dusty gold
         

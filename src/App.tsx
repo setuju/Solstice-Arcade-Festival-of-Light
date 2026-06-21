@@ -113,10 +113,10 @@ function GameWorld() {
         </div>
       )}
       {/* Main Game Area */}
-      <div className="flex-1 relative flex flex-col items-center justify-center p-2 sm:p-4 md:p-8 overflow-y-auto overflow-x-hidden subtle-scrollbar">
+      <div className="flex-1 relative flex flex-col items-center justify-start pt-[calc(var(--header-height)+16px)] sm:pt-[calc(var(--header-height)+24px)] p-2 sm:p-4 md:p-8 overflow-y-auto overflow-x-hidden subtle-scrollbar">
         
         {/* Core Canvas / Viewport Wrapper */}
-        <div className="w-full max-w-[800px] relative flex flex-col items-center mx-auto transition-all duration-300 transform sm:scale-100">
+        <div className="w-full max-w-[800px] relative flex flex-col items-center mx-auto mt-2 sm:mt-4 md:mt-6 mb-12 transition-all duration-300 transform sm:scale-100">
           <div className="relative w-full aspect-[4/3] bg-black/60 rounded-xl overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.8)] border-[3px] border-white/10 shrink-0">
             <NavigationLoader>
               {(displayedState) => (
