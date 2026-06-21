@@ -1,0 +1,7 @@
+{
+  "name": "Solstice Arcade: Festival of Light",
+  "description": "A festive lighthouse hub world and arcade game hub.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
