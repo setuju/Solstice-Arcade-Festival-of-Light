@@ -15,6 +15,18 @@ interface Player {
   radius: number;
   speed: number;
   pushing: boolean;
+  angle?: number;
+}
+
+interface Particle {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  maxLife: number;
+  color: string;
+  size: number;
 }
 
 export function Sumo() {
@@ -80,6 +92,7 @@ export function Sumo() {
     
     let lastTime = performance.now();
     let arenaShrinkTimer = 0;
+    let particles: Particle[] = [];
     
     let state = 'playing';
     let animId: number;
@@ -91,6 +104,7 @@ export function Sumo() {
       ball.active = false;
       slowEffect.timer = 0;
       state = 'playing';
+      particles = [];
       
       const fightMsg = t('sumo.fight', 'FIGHT!');
       gameRef.current.message = fightMsg;
@@ -135,6 +149,9 @@ export function Sumo() {
 
         p1.x += p1.vx * dt; p1.y += p1.vy * dt;
         p2.x += p2.vx * dt; p2.y += p2.vy * dt;
+        
+        p1.angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        p2.angle = Math.atan2(p1.y - p2.y, p1.x - p2.x);
 
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
@@ -158,6 +175,14 @@ export function Sumo() {
              p1.x -= nx * 300 * dt; p1.y -= ny * 300 * dt;
              p2.x += nx * 300 * dt; p2.y += ny * 300 * dt;
           }
+        }
+
+        // Pushing dust particles
+        if ((p1.vx !== 0 || p1.vy !== 0) && p1.pushing && Math.random() < 0.3) {
+             particles.push({ x: p1.x - Math.cos(p1.angle || 0) * p1.radius, y: p1.y - Math.sin(p1.angle || 0) * p1.radius, vx: Math.random() * 40 - 20, vy: Math.random() * 40 - 20, life: 0.5, maxLife: 0.5, color: '#d6c08e', size: Math.random() * 3 + 2 });
+        }
+        if ((p2.vx !== 0 || p2.vy !== 0) && p2.pushing && Math.random() < 0.3) {
+             particles.push({ x: p2.x - Math.cos(p2.angle || 0) * p2.radius, y: p2.y - Math.sin(p2.angle || 0) * p2.radius, vx: Math.random() * 40 - 20, vy: Math.random() * 40 - 20, life: 0.5, maxLife: 0.5, color: '#d6c08e', size: Math.random() * 3 + 2 });
         }
 
         arenaShrinkTimer += dt;
@@ -204,6 +229,15 @@ export function Sumo() {
 
         if (winner) {
           state = 'round_over';
+          
+          // Ring out explosion particles
+          const loser = winner === 'p1' ? p2 : winner === 'p2' ? p1 : null;
+          if (loser) {
+             for (let i = 0; i < 30; i++) {
+                particles.push({ x: loser.x, y: loser.y, vx: (Math.random() - 0.5) * 300, vy: (Math.random() - 0.5) * 300, life: 1, maxLife: 1, color: loser.color, size: Math.random() * 5 + 3 });
+             }
+          }
+
           if (winner === 'p1') {
             gameRef.current.roundsP1++;
             setRoundsP1(gameRef.current.roundsP1);
@@ -268,35 +302,152 @@ export function Sumo() {
       ctx.fillStyle = '#111';
       ctx.fillRect(0, 0, 800, 600);
 
+      // Arena shadow
       ctx.beginPath();
       ctx.arc(arena.x, arena.y, arena.radius, 0, Math.PI * 2);
-      ctx.fillStyle = '#fff';
+      ctx.shadowBlur = 20;
+      ctx.shadowColor = 'rgba(0,0,0,0.8)';
+      ctx.fillStyle = '#000';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Arena sand
+      ctx.beginPath();
+      ctx.arc(arena.x, arena.y, arena.radius, 0, Math.PI * 2);
+      const dohyoGrad = ctx.createRadialGradient(arena.x, arena.y, 0, arena.x, arena.y, Math.max(1, arena.radius));
+      dohyoGrad.addColorStop(0, '#e6d3a8');
+      dohyoGrad.addColorStop(0.95, '#d6c08e');
+      dohyoGrad.addColorStop(1, '#c2a563');
+
       if (slowEffect.timer > 0) ctx.fillStyle = slowEffect.player === 'p1' ? '#bfdbfe' : '#fecaca';
+      else ctx.fillStyle = dohyoGrad;
       ctx.fill();
 
+      // Straw ring (Tawara)
+      ctx.beginPath();
+      ctx.arc(arena.x, arena.y, arena.radius, 0, Math.PI * 2);
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = '#b89456';
+      ctx.stroke();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#8a6e3c';
+      ctx.stroke();
+
+      // Starting lines (Shikiri-sen)
+      if (arena.radius > 50) {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+          ctx.fillRect(arena.x - 30, arena.y - 12, 8, 24);
+          ctx.fillRect(arena.x + 22, arena.y - 12, 8, 24);
+      }
+
       if (ball.active) {
+          const pulse = 1 + Math.sin(time / 150) * 0.2;
           ctx.beginPath();
-          ctx.arc(ball.x, ball.y, 8, 0, Math.PI * 2);
-          ctx.fillStyle = '#eab308';
-          ctx.shadowBlur = 10;
+          ctx.arc(ball.x, ball.y, 8 * pulse, 0, Math.PI * 2);
+          
+          const ballGrad = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, Math.max(1, 15 * pulse));
+          ballGrad.addColorStop(0, 'rgba(254, 240, 138, 1)'); 
+          ballGrad.addColorStop(0.5, 'rgba(234, 179, 8, 1)');
+          ballGrad.addColorStop(1, 'rgba(234, 179, 8, 0)');
+          
+          ctx.fillStyle = ballGrad;
+          ctx.shadowBlur = 20;
           ctx.shadowColor = '#eab308';
           ctx.fill();
           ctx.shadowBlur = 0;
+          
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, 4 * pulse, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
       }
 
-      const drawPlayer = (p: Player) => {
+      const drawPlayer = (p: Player, isP1: boolean) => {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle || 0);
+
+          if (p.pushing) {
+              ctx.beginPath();
+              ctx.moveTo(-p.radius - 5, -10);
+              ctx.lineTo(-p.radius - 20, -12);
+              ctx.moveTo(-p.radius - 5, 10);
+              ctx.lineTo(-p.radius - 20, 12);
+              ctx.strokeStyle = isP1 ? 'rgba(59, 130, 246, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+              ctx.lineWidth = 3;
+              ctx.stroke();
+          }
+
+          // Shadow
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = 'rgba(0,0,0,0.5)';
+          ctx.fillStyle = '#000';
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          // Body Outline (Team Color)
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
           ctx.fillStyle = p.color;
           ctx.fill();
-          if (p.pushing) {
-             ctx.strokeStyle = '#fff';
-             ctx.lineWidth = 3;
-             ctx.stroke();
-          }
+          
+          // Skin
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius - 2, 0, Math.PI * 2);
+          ctx.fillStyle = '#fcdbb6';
+          ctx.fill();
+
+          // Mawashi (Belt)
+          const beltColor = isP1 ? '#1e3a8a' : '#7f1d1d';
+          ctx.fillStyle = beltColor;
+          ctx.fillRect(-2, -p.radius, 6, p.radius * 2); 
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius, -Math.PI / 3, Math.PI / 3);
+          ctx.lineWidth = 4;
+          ctx.strokeStyle = beltColor;
+          ctx.stroke();
+
+          // Head
+          ctx.beginPath();
+          ctx.arc(p.radius * 0.4, 0, p.radius * 0.6, 0, Math.PI * 2);
+          ctx.fillStyle = '#fcdbb6';
+          ctx.fill();
+          
+          // Topknot (Chonmage)
+          ctx.beginPath();
+          ctx.arc(p.radius * 0.3, 0, p.radius * 0.3, 0, Math.PI * 2);
+          ctx.fillStyle = '#111';
+          ctx.fill();
+          ctx.beginPath();
+          ctx.ellipse(p.radius * 0.1, 0, p.radius * 0.25, p.radius * 0.15, 0, 0, Math.PI * 2);
+          ctx.fillStyle = '#000';
+          ctx.fill();
+
+          ctx.restore();
       };
-      drawPlayer(p1);
-      drawPlayer(p2);
+      drawPlayer(p1, true);
+      drawPlayer(p2, false);
+
+      // Draw particles
+      ctx.globalCompositeOperation = 'source-over';
+      for (let i = particles.length - 1; i >= 0; i--) {
+          let pt = particles[i];
+          pt.x += pt.vx * dt;
+          pt.y += pt.vy * dt;
+          pt.life -= dt;
+          if (pt.life <= 0) {
+             particles.splice(i, 1);
+             continue;
+          }
+          ctx.globalAlpha = Math.max(0, pt.life / pt.maxLife);
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+          ctx.fillStyle = pt.color;
+          ctx.fill();
+      }
+      ctx.globalAlpha = 1.0;
 
       animId = requestAnimationFrame(loop);
     };
