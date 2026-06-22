@@ -20,6 +20,7 @@ import { AchievementModal } from './components/AchievementModal';
 import { checkAchievements } from './utils/achievements';
 import { initAntiDebug } from './utils/antiDebug';
 import { initAntiTamper } from './utils/antiTamper';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 function GameWorld() {
   const { user, gameState, gameData, setGameState, currentResetAction, achievementToShow, setAchievementToShow, unlockAchievement } = useGame();
@@ -178,10 +179,12 @@ export default function App() {
   }, []);
 
   return (
-    <GameProvider>
-      <LanguageProvider>
-        <GameWorld />
-      </LanguageProvider>
-    </GameProvider>
+    <ErrorBoundary>
+      <GameProvider>
+        <LanguageProvider>
+          <GameWorld />
+        </LanguageProvider>
+      </GameProvider>
+    </ErrorBoundary>
   );
 }
