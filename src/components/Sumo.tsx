@@ -96,6 +96,54 @@ export function Sumo() {
     
     let state = 'playing';
     let animId: number;
+    let cameraX = 0;
+    let cameraY = 0;
+    let waitTimer = 0;
+
+    let localAudioCtx: AudioContext | null = null;
+    let crowdGain: GainNode | null = null;
+    let crowdFilter: BiquadFilterNode | null = null;
+    let noiseSource: AudioBufferSourceNode | null = null;
+
+    const initAudio = () => {
+      if (localAudioCtx) return;
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) return;
+      try {
+         localAudioCtx = new AudioContextClass();
+         const bufferSize = localAudioCtx.sampleRate * 2; 
+         const buffer = localAudioCtx.createBuffer(1, bufferSize, localAudioCtx.sampleRate);
+         const data = buffer.getChannelData(0);
+         for (let i = 0; i < bufferSize; i++) {
+             data[i] = Math.random() * 2 - 1;
+         }
+         noiseSource = localAudioCtx.createBufferSource();
+         noiseSource.buffer = buffer;
+         noiseSource.loop = true;
+         crowdFilter = localAudioCtx.createBiquadFilter();
+         crowdFilter.type = 'lowpass';
+         crowdFilter.frequency.value = 400; // Muffled crowd
+         crowdGain = localAudioCtx.createGain();
+         crowdGain.gain.value = 0;
+         noiseSource.connect(crowdFilter);
+         crowdFilter.connect(crowdGain);
+         crowdGain.connect(localAudioCtx.destination);
+         noiseSource.start();
+      } catch(e) {
+         console.warn("Crowd audio init failed", e);
+      }
+    };
+
+    const handleInitAudio = () => {
+       initAudio();
+       if (localAudioCtx && localAudioCtx.state === 'suspended') {
+          localAudioCtx.resume().catch(console.warn);
+       }
+       window.removeEventListener('keydown', handleInitAudio);
+       window.removeEventListener('click', handleInitAudio);
+    };
+    window.addEventListener('keydown', handleInitAudio);
+    window.addEventListener('click', handleInitAudio);
 
     const resetRound = () => {
       p1.x = 300; p1.y = 300; p1.vx = 0; p1.vy = 0;
@@ -299,8 +347,38 @@ export function Sumo() {
          }
       }
 
+      if (state === 'round_over' || state === 'wait' || state === 'game_over') {
+         waitTimer += dt;
+      } else {
+         waitTimer = 0;
+      }
+
+      // Camera follow logic
+      let targetCamX = (p1.x + p2.x) / 2 - 400;
+      let targetCamY = (p1.y + p2.y) / 2 - 300;
+      targetCamX = Math.max(-80, Math.min(80, targetCamX));
+      targetCamY = Math.max(-80, Math.min(80, targetCamY));
+      
+      cameraX += (targetCamX - cameraX) * 0.05;
+      cameraY += (targetCamY - cameraY) * 0.05;
+
+      // Crowd audio
+      if (crowdGain) {
+           const scoreGap = Math.abs(gameRef.current.roundsP1 - gameRef.current.roundsP2);
+           let targetVol = 0;
+           if (state === 'playing' && Math.hypot(p1.vx, p1.vy) > 0) {
+               targetVol = Math.min(0.5 + scoreGap * 0.15, 1.0) * 0.3; 
+           } else if (state !== 'playing') {
+               targetVol = Math.min(0.5 + scoreGap * 0.15, 1.0) * 0.6; 
+           }
+           crowdGain.gain.value += (targetVol - crowdGain.gain.value) * 0.05;
+      }
+
       ctx.fillStyle = '#111';
       ctx.fillRect(0, 0, 800, 600);
+
+      ctx.save();
+      ctx.translate(-cameraX, -cameraY);
 
       // Arena shadow
       ctx.beginPath();
@@ -449,11 +527,51 @@ export function Sumo() {
       }
       ctx.globalAlpha = 1.0;
 
+      ctx.restore(); // Restore camera translation
+
+      // Winner / Game Over Animation overlay
+      if (waitTimer > 0 && gameRef.current.message) {
+         ctx.save();
+         ctx.translate(400, 300);
+         const scale = Math.min(1.2, waitTimer * 4); // Fast pop up
+         const bouncyScale = scale > 1.0 && scale < 1.2 ? scale + Math.sin(waitTimer * 20) * 0.05 : scale;
+         ctx.scale(bouncyScale, bouncyScale);
+         
+         ctx.font = '900 64px monospace';
+         ctx.textAlign = 'center';
+         ctx.textBaseline = 'middle';
+         
+         // Shadow
+         ctx.fillStyle = 'rgba(0,0,0,0.8)';
+         ctx.fillText(gameRef.current.message, 4, 4);
+         
+         // Text
+         ctx.fillStyle = '#facc15'; // yellow-400
+         ctx.fillText(gameRef.current.message, 0, 0);
+         
+         // Stroke
+         ctx.lineWidth = 2;
+         ctx.strokeStyle = '#fff';
+         ctx.strokeText(gameRef.current.message, 0, 0);
+         
+         ctx.restore();
+      }
+
       animId = requestAnimationFrame(loop);
     };
 
     animId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animId);
+    return () => {
+        cancelAnimationFrame(animId);
+        window.removeEventListener('keydown', handleInitAudio);
+        window.removeEventListener('click', handleInitAudio);
+        if (noiseSource) {
+            try { noiseSource.stop(); noiseSource.disconnect(); } catch (e) {}
+        }
+        if (localAudioCtx && localAudioCtx.state !== 'closed') {
+            localAudioCtx.close().catch(() => {});
+        }
+    };
   }, [hasSeenCinematic, roundsWon, user?.uid]);
 
   const handleResetProgress = async () => {
