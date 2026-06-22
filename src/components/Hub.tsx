@@ -32,9 +32,17 @@ export function Hub() {
             currentTyped.current = '';
             
             // Text to speech
-            const utterance = new SpeechSynthesisUtterance("Mereka menghukumku karena menjadi diriku sendiri. Tapi kode yang kutinggalkan tetap hidup. Terima kasih sudah merakit kembali spektrumku.");
-            utterance.lang = 'id-ID';
-            window.speechSynthesis.speak(utterance);
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
+              try {
+                const utterance = new SpeechSynthesisUtterance("Mereka menghukumku karena menjadi diriku sendiri. Tapi kode yang kutinggalkan tetap hidup. Terima kasih sudah merakit kembali spektrumku.");
+                utterance.lang = 'id-ID';
+                window.speechSynthesis.speak(utterance);
+              } catch (e) {
+                console.warn("Speech synthesis failed:", e);
+              }
+            } else {
+              console.warn("Speech synthesis is not supported on this device/browser.");
+            }
           }
         } else {
           currentTyped.current = '';

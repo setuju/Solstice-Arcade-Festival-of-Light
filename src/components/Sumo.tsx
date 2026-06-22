@@ -184,13 +184,13 @@ export function Sumo() {
                 slowEffect = { player: 'p1', timer: 3 };
                 gameRef.current.ballsCollected++;
                 setBallsCollected(b => b + 1);
-                if (user?.uid) updateDoc(doc(db, 'users', user.uid), { sumoBallsCollected: increment(1) });
+                if (db && user?.uid && user.uid !== 'demo') updateDoc(doc(db, 'users', user.uid), { sumoBallsCollected: increment(1) });
             } else if (Math.hypot(p2.x - ball.x, p2.y - ball.y) < p2.radius + 10) {
                 ball.active = false;
                 slowEffect = { player: 'p2', timer: 3 };
                 gameRef.current.ballsCollected++;
                 setBallsCollected(b => b + 1);
-                if (user?.uid) updateDoc(doc(db, 'users', user.uid), { sumoBallsCollected: increment(1) });
+                if (db && user?.uid && user.uid !== 'demo') updateDoc(doc(db, 'users', user.uid), { sumoBallsCollected: increment(1) });
             }
         }
 
@@ -208,7 +208,7 @@ export function Sumo() {
             gameRef.current.roundsP1++;
             setRoundsP1(gameRef.current.roundsP1);
             setRoundsWon(r => r + 1);
-            if (user?.uid) updateDoc(doc(db, 'users', user.uid), { sumoRoundsWon: increment(1) });
+            if (db && user?.uid && user.uid !== 'demo') updateDoc(doc(db, 'users', user.uid), { sumoRoundsWon: increment(1) });
             
             // Check milestones
             const newWins = roundsWon + 1;
@@ -236,7 +236,7 @@ export function Sumo() {
       if (state === 'round_over') {
          if (gameRef.current.roundsP1 === 3 || gameRef.current.roundsP2 === 3) {
              state = 'game_over';
-             if (user?.uid) updateDoc(doc(db, 'users', user.uid), { sumoMatchesPlayed: increment(1) });
+             if (db && user?.uid && user.uid !== 'demo') updateDoc(doc(db, 'users', user.uid), { sumoMatchesPlayed: increment(1) });
              setMatchesPlayed(m => m + 1);
              
              if (gameRef.current.roundsP1 === 3) {
@@ -307,7 +307,7 @@ export function Sumo() {
 
   const handleResetProgress = async () => {
     if (confirm(t('common.confirm'))) {
-      if (user?.uid) {
+      if (db && user?.uid && user.uid !== 'demo') {
         await updateDoc(doc(db, 'users', user.uid), {
           sumoRoundsWon: 0,
           sumoBallsCollected: 0,

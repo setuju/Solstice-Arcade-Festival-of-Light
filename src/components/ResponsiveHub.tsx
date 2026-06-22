@@ -133,9 +133,17 @@ export function ResponsiveHub() {
             setIsListeningTuring(false);
             currentTyped.current = '';
             
-            const utterance = new SpeechSynthesisUtterance(t('easteregg.turing.monologue'));
-            utterance.lang = language === 'id' ? 'id-ID' : 'en-US';
-            window.speechSynthesis.speak(utterance);
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
+              try {
+                const utterance = new SpeechSynthesisUtterance(t('easteregg.turing.monologue'));
+                utterance.lang = language === 'id' ? 'id-ID' : 'en-US';
+                window.speechSynthesis.speak(utterance);
+              } catch (e) {
+                console.warn("Speech synthesis failed in ResponsiveHub:", e);
+              }
+            } else {
+              console.warn("Speech synthesis is not supported on this device/browser.");
+            }
           }
         } else {
           currentTyped.current = '';

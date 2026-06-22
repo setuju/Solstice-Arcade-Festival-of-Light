@@ -41,7 +41,22 @@ export function ShadowChef() {
 
   const initAudio = () => {
     if (!audioCtx) {
-      setAudioCtx(new (window.AudioContext || (window as any).webkitAudioContext)());
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextClass) {
+        try {
+          const ctx = new AudioContextClass();
+          if (ctx.state === 'suspended') {
+            ctx.resume().catch(err => console.warn("Could not resume audio component:", err));
+          }
+          setAudioCtx(ctx);
+        } catch (e) {
+          console.error("Failed to initialize AudioContext in ShadowChef:", e);
+        }
+      } else {
+        console.warn("AudioContext is not supported on this browser.");
+      }
+    } else if (audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(err => console.warn("Could not resume active audio component:", err));
     }
   };
 
