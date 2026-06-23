@@ -38,10 +38,15 @@ export const translations: Record<string, Record<string, string>> = {
     "landing.leaderboard.subtitle": "The best operatives who have broken dimension limits.",
     "landing.footer.desc": "A Festival of Light that tests memory, logic, agility, and courage. Built with React, TypeScript, and distributed Cloud infrastructure.",
     "hub.platform.spectrum": "Spectrum",
+    "hub.platform.spectrum.hint": "Complete cipher in < 8 moves.",
     "hub.platform.galveston": "Galveston",
+    "hub.platform.galveston.hint": "Memorize patterns without making a single mistake.",
     "hub.platform.sumo": "Sumo",
+    "hub.platform.sumo.hint": "Survive > 45s without taking push damage.",
     "hub.platform.shadowchef": "Shadow Chef",
+    "hub.platform.shadowchef.hint": "Complete level 5 in blind mode.",
     "hub.platform.longestsecond": "Longest Second",
+    "hub.platform.longestsecond.hint": "Report anomaly directly on loop 1.",
     "hub.platform.locked": "SECURE MORE FRAGMENTS",
     "hub.fragmentsInfo": "{count}/14 FRAGMENTS",
     "hub.greeting": "Operative {displayName}",
@@ -261,7 +266,8 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "LOCKED",
     "profile.allClearBonus": "Dimension Solved Bonus (All 14 Fragments)",
     "profile.allClearDesc": "Extract the final synthesis sequence from the tower beacons once all fragments have been gathered.",
-    "profile.logoutButton": "ABORT SESSION (LOG OUT)"
+    "profile.logoutButton": "ABORT SESSION (LOG OUT)",
+    "sumo.roundComplete": "ROUND COMPLETE"
   },
   "id": {
     "common.welcome": "Selamat Datang di Solstice Arcade!",
@@ -302,10 +308,15 @@ export const translations: Record<string, Record<string, string>> = {
     "landing.leaderboard.subtitle": "Para operatif terbaik yang telah menembus batas dimensi.",
     "landing.footer.desc": "Festival Cahaya yang menguji memori, logika, ketangkasan, dan keberanian. Dibuat dengan React, TypeScript, dan infrastruktur Cloud terdistribusi.",
     "hub.platform.spectrum": "Spectrum",
+    "hub.platform.spectrum.hint": "Selesaikan sandi dalam < 8 langkah.",
     "hub.platform.galveston": "Galveston",
+    "hub.platform.galveston.hint": "Hafalkan pola tanpa sekalipun salah.",
     "hub.platform.sumo": "Sumo",
+    "hub.platform.sumo.hint": "Bertahan > 45 detik tanpa terkena dorongan.",
     "hub.platform.shadowchef": "Shadow Chef",
+    "hub.platform.shadowchef.hint": "Selesaikan level 5 dengan mata tertutup.",
     "hub.platform.longestsecond": "Longest Second",
+    "hub.platform.longestsecond.hint": "Laporkan anomali langsung di loop 1.",
     "hub.platform.locked": "AMANKAN LEBIH BANYAK FRAGMEN",
     "hub.fragmentsInfo": "{count}/14 FRAGMEN",
     "hub.greeting": "Operatif {displayName}",
@@ -525,7 +536,8 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "TERKUNCI",
     "profile.allClearBonus": "Bonus Dimensi Terpecahkan (Seluruh 14 Fragmen)",
     "profile.allClearDesc": "Ekstrak sekuens sintesis final dari suar menara setelah semua fragmen terkumpul.",
-    "profile.logoutButton": "BATALKAN SESI (LOG OUT)"
+    "profile.logoutButton": "BATALKAN SESI (LOG OUT)",
+    "sumo.roundComplete": "RONDE SELESAI"
   },
   "es": {
     "common.welcome": "¡Te damos la bienvenida a Solstice Arcade!",
@@ -789,7 +801,13 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "BLOQUEADO",
     "profile.allClearBonus": "Bonificación por dimensión resuelta (los 14 fragmentos)",
     "profile.allClearDesc": "Extrae la secuencia de síntesis final de los faros de la torre una vez que hayas reunido todos los fragmentos.",
-    "profile.logoutButton": "ABORTAR SESIÓN (CERRAR SESIÓN)"
+    "profile.logoutButton": "ABORTAR SESIÓN (CERRAR SESIÓN)",
+    "hub.platform.spectrum.hint": "[es] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[es] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[es] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[es] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[es] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[es] ROUND COMPLETE"
   },
   "fr": {
     "common.welcome": "Bienvenue dans Solstice Arcade !",
@@ -1053,7 +1071,13 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "VERROUILLÉ",
     "profile.allClearBonus": "Bonus Dimension résolue (Les 14 fragments)",
     "profile.allClearDesc": "Extrayez la séquence de synthèse finale des phares de la tour une fois tous les fragments rassemblés.",
-    "profile.logoutButton": "INTERROMPRE LA SESSION (SE DÉCONNECTER)"
+    "profile.logoutButton": "INTERROMPRE LA SESSION (SE DÉCONNECTER)",
+    "hub.platform.spectrum.hint": "[fr] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[fr] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[fr] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[fr] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[fr] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[fr] ROUND COMPLETE"
   },
   "de": {
     "common.welcome": "Willkommen bei Solstice Arcade!",
@@ -1317,7 +1341,13 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "GESPERRT",
     "profile.allClearBonus": "Dimensions-Abschlussbonus (Alle 14 Fragmente)",
     "profile.allClearDesc": "Extrahiere die finale Synthesesequenz aus den Turmfeuern, sobald alle Fragmente gesammelt wurden.",
-    "profile.logoutButton": "SITZUNG ABBRECHEN (AUSLOGGEN)"
+    "profile.logoutButton": "SITZUNG ABBRECHEN (AUSLOGGEN)",
+    "hub.platform.spectrum.hint": "[de] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[de] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[de] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[de] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[de] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[de] ROUND COMPLETE"
   },
   "zh-CN": {
     "common.welcome": "欢迎来到至日街机！",
@@ -1581,7 +1611,13 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "未解锁",
     "profile.allClearBonus": "维度通关奖励（全部14个碎片）",
     "profile.allClearDesc": "收集齐所有碎片后，从高塔信标中提取最终的合成序列。",
-    "profile.logoutButton": "中止会话（登出）"
+    "profile.logoutButton": "中止会话（登出）",
+    "hub.platform.spectrum.hint": "[zh-CN] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[zh-CN] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[zh-CN] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[zh-CN] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[zh-CN] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[zh-CN] ROUND COMPLETE"
   },
   "ja": {
     "common.welcome": "ソルスティス・アーケードへようこそ！",
@@ -1845,7 +1881,13 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "ロック中",
     "profile.allClearBonus": "次元解決ボーナス（全14フラグメント）",
     "profile.allClearDesc": "すべてのフラグメントを集めたら、塔のビーコンから最終合成シーケンスを抽出せよ。",
-    "profile.logoutButton": "セッション中断（ログアウト）"
+    "profile.logoutButton": "セッション中断（ログアウト）",
+    "hub.platform.spectrum.hint": "[ja] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[ja] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[ja] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[ja] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[ja] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[ja] ROUND COMPLETE"
   },
   "hi": {
     "common.welcome": "सॉल्सटिस आर्केड में आपका स्वागत है!",
@@ -2109,7 +2151,13 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "लॉक है",
     "profile.allClearBonus": "आयाम हल बोनस (सभी 14 टुकड़े)",
     "profile.allClearDesc": "सभी टुकड़े एकत्र हो जाने पर टॉवर बीकन से अंतिम संश्लेषण अनुक्रम निकालें।",
-    "profile.logoutButton": "सत्र समाप्त करें (लॉग आउट)"
+    "profile.logoutButton": "सत्र समाप्त करें (लॉग आउट)",
+    "hub.platform.spectrum.hint": "[hi] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[hi] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[hi] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[hi] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[hi] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[hi] ROUND COMPLETE"
   },
   "pt-BR": {
     "common.welcome": "Bem-vindo ao Solstice Arcade!",
@@ -2373,7 +2421,13 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "BLOQUEADO",
     "profile.allClearBonus": "Bônus de Dimensão Resolvida (Todos os 14 Fragmentos)",
     "profile.allClearDesc": "Extraia a frequência de síntese final no topo do farol assim que coletar todos os fragmentos.",
-    "profile.logoutButton": "ABANDONAR MISSÃO (SAIR)"
+    "profile.logoutButton": "ABANDONAR MISSÃO (SAIR)",
+    "hub.platform.spectrum.hint": "[pt-BR] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[pt-BR] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[pt-BR] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[pt-BR] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[pt-BR] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[pt-BR] ROUND COMPLETE"
   },
   "ru": {
     "common.welcome": "Добро пожаловать в Solstice Arcade!",
@@ -2637,6 +2691,12 @@ export const translations: Record<string, Record<string, string>> = {
     "profile.taskIncomplete": "ЗАБЛОКИРОВАНО",
     "profile.allClearBonus": "Бонус прохождения (Все 14 фрагментов)",
     "profile.allClearDesc": "Считайте финальную синтез-последовательность с башни после того, как соберете все фрагменты.",
-    "profile.logoutButton": "ПРЕВРАТИТЬ СЕССИЮ (ВЫЙТИ)"
+    "profile.logoutButton": "ПРЕВРАТИТЬ СЕССИЮ (ВЫЙТИ)",
+    "hub.platform.spectrum.hint": "[ru] Complete cipher in < 8 moves.",
+    "hub.platform.galveston.hint": "[ru] Memorize patterns without making a single mistake.",
+    "hub.platform.sumo.hint": "[ru] Survive > 45s without taking push damage.",
+    "hub.platform.shadowchef.hint": "[ru] Complete level 5 in blind mode.",
+    "hub.platform.longestsecond.hint": "[ru] Report anomaly directly on loop 1.",
+    "sumo.roundComplete": "[ru] ROUND COMPLETE"
   }
 };
